@@ -27,21 +27,19 @@ public class FlattenBinaryTree {
     {
         for (int i = 0; i < depth; i++)
             System.out.print("    ");
-        if (root == null)
-        {
+
+        if (root == null) {
             System.out.println("-");
             return;
         }
-        else
-        {
+        else {
             System.out.println(root.val);
             printTree(root.left, depth + 1);
             printTree(root.right, depth + 1);
         }
     }
 
-    public static void flatten(TreeNode root)
-    {
+    public static void flatten(TreeNode root) {
         if (root == null)
             return;
 
@@ -55,10 +53,9 @@ public class FlattenBinaryTree {
         root.right = root.left;
         root.left = null;
     }
-    public static TreeNode endOfList(TreeNode root)
-    {
-        while (root.right != null)
-        {
+
+    public static TreeNode endOfList(TreeNode root) {
+        while (root.right != null) {
             root = root.right;
         }
         return root;
