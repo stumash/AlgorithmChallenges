@@ -25,8 +25,8 @@ class Terminator:
 
             if x in self.known:
                 result = self.known[x]
-                for n in chain:
-                    self.known[n] = result
+                for c in chain:
+                    self.known[c] = result
                 return result
 
             chain.append(x)
