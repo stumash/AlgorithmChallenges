@@ -61,7 +61,66 @@ class AvlTree:
         return path
 
     def remove(self, data) -> None:
-        pass # TODO
+        path: Deque[AvlTreeNode] = self._bst_parent_path(data)
+        parent = path[-1]
+
+        if parent.left is not None and parent.left.data == data:
+            curr = parent.left
+        elif parent.right is not None and parent.right.data == data:
+            curr = parent.right
+        else:
+            raise ValueError('Value not found')
+
+        if curr.left is None and curr.right is None:
+            if parent.left is curr:
+                parent.left is None
+            else:
+                parent.right is None
+        elif curr.left is None:
+            if parent.left is curr:
+                parent.left = curr.right
+            else:
+                parent.right = curr.right
+        elif curr.right is None:
+            if parent.left is curr:
+                parent.left = curr.left
+            else:
+                parent.right = curr.left
+        else: # both not None
+            # TODO replace with successor
+            replacement = self.succ(curr)
+            raise ValueError('not implemented')
+
+        for node in reversed(path):
+            self._rebalance(node)
+
+        return curr
+
+    def succ(self, tn: AvlTreeNode) -> AvlTreeNode:
+        raise ValueError('not implemented')
+
+    def pred(self, tn: AvlTreeNode) -> AvlTreeNode:
+        raise ValueError('not implemented')
+
+    def _get_node(self, data) -> AvlTreeNode:
+        path = self._bst_parent_path(data)
+        parent = path[-1]
+        if parent.left is not None and parent.left.data == data:
+            return parent.left
+        elif parent.right is not None and parent.right.data == data:
+            return parent.right
+        else:
+            raise ValueError('Value not found')
+
+    def __contains__(self, data) -> bool:
+        path = self._bst_parent_path(data)
+        parent = path[-1]
+        if parent.left is not None and parent.left.data == data:
+            return True
+        elif parent.right is not None and parent.right.data == data:
+            return True
+        else:
+            return False
 
     def _rebalance(self, tn: AvlTreeNode) -> None:
         tn.update_height()
