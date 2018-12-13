@@ -97,7 +97,10 @@ class AvlTree:
         return curr
 
     def succ(self, tn: AvlTreeNode) -> AvlTreeNode:
-        raise ValueError('not implemented')
+        if tn.right is not None:
+            return self._min_descendant(tn.right)
+        else:
+            raise ValueError('not implemented')
 
     def pred(self, tn: AvlTreeNode) -> AvlTreeNode:
         raise ValueError('not implemented')
@@ -185,6 +188,18 @@ class AvlTree:
             old_parent.update_height()
         else:
             self.root = tn.parent
+
+    def _min_descendant(self, tn: AvlTreeNode) -> AvlTreeNode:
+        curr = tn
+        while curr.left is not None:
+            curr = curr.left
+        return curr
+
+    def _max_descendant(self, tn: AvlTreeNode) -> AvlTreeNode:
+        curr = tn
+        while curr.right is not None:
+            curr = curr.right
+        return curr
 
     def print(self):
         _print(self.root, 0)
