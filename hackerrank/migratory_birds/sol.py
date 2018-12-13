@@ -9,4 +9,4 @@ def sol(arr: List[int]) -> int:
     return min(a for a in d if d[a] == most_viewings)
 
 input()
-print(sol(list(map(int, input().split(' '))))
+print(sol(list(map(int, input().split(' ')))))
