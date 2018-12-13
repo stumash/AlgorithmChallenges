@@ -1,12 +1,10 @@
 from typing import List
-from collections import defaultdict
+from collections import Counter
 
 def sol(arr: List[int]) -> int:
-    d = defaultdict(int)
-    for a in arr:
-        d[a] += 1
+    d = Counter(arr)
     most_viewings = max(d.values())
     return min(a for a in d if d[a] == most_viewings)
 
 input()
-print(sol(list(map(int, input().split(' ')))))
+print(sol2(list(map(int, input().split(' ')))))
