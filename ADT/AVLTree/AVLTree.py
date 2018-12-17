@@ -15,9 +15,11 @@ def main():
 
     print()
 
-    # for num in random_half(nums):
-        # tree.remove(num)
-    # tree.print()
+    for num in random_half(nums):
+        print("deleting {}".format(num))
+        tree.remove(num)
+    print()
+    tree.print()
 
 class AVLTree:
     def __init__(self):
@@ -37,7 +39,50 @@ class AVLTree:
         root.update_height()
 
         balance_factor = root.balance_factor()
+        if balance_factor > 1:
+            balance_factor = root.left.balance_factor()
+            if balance_factor > 0: # left-left
+                return self._rotate_right(root)
+            else:                  # left-right
+                root.left = self._rotate_left(root.left)
+                return self._rotate_right(root)
+        elif balance_factor < -1:
+            balance_factor = root.right.balance_factor()
+            if balance_factor < 0: # right-right
+                return self._rotate_left(root)
+            else:                  # right-left
+                root.right = self._rotate_right(root.right)
+                return self._rotate_left(root)
 
+        return root
+
+    def remove(self, val):
+        node = self._get_node(val)
+        self.top_root = self._remove(self.top_root, node)
+
+    def _remove(self, root, node):
+        if not root:
+            return root
+        elif node.val < root.val:
+            root.left = self._remove(root.left, node)
+        elif node.val > root.val:
+            root.right = self._remove(root.right, node)
+
+        elif node is root:
+            if root.left is None:
+                return root.right
+            elif root.right is None:
+                return root.left
+            succ = min_descendant(root.right)
+            root.val = succ.val
+            root.right = self._remove(root.right, succ)
+
+        if root is None:
+            return root
+
+        root.update_height()
+
+        balance_factor = root.balance_factor()
         if balance_factor > 1:
             balance_factor = root.left.balance_factor()
             if balance_factor > 0: # left-left
@@ -80,15 +125,17 @@ class AVLTree:
         return old_left
 
     def _get_node(self, val):
-    # assumes val is in tree
         curr = self.top_root
         while curr:
-            if val <= curr.data:
-                if val == curr.data and (curr.left is None or curr.left.data != val):
+            if curr is None:
+                raise ValueError('not found')
+            if val <= curr.val:
+                if val == curr.val and (curr.left is None or curr.left.val != val):
                     break
                 curr = curr.left
             else:
                 curr = curr.right
+        if not curr: raise ValueError('not found')
         return curr
 
     def print(self):
