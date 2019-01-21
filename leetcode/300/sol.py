@@ -1,13 +1,15 @@
 from typing import List, Any
 
-def incr(bs: List[bool]) -> None:
-    c_in = True # add 1
-    for i,b in enumerate(bs):
-        bs[i] = c_in ^ b
-        c_in =  c_in and b
-
 # binary flag version (iterative)
 def powerset(things: List[Any]):
+
+    # 'increment' a list of booleans as if each was a bit in an integer
+    def incr(bs: List[bool]) -> None:
+        c_in = True # add 1
+        for i,b in enumerate(bs):
+            bs[i] = c_in ^ b
+            c_in =  c_in and b
+
     yield []
 
     bs    = [True] + [False]*(len(things)-1)
