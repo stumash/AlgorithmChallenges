@@ -46,8 +46,11 @@ def powerset_v2(things: List[Any]):
 
 class Solution:
 
-    # naive solution
     def lengthOfLIS(self, nums):
+        return self.powerset_lengthOfLIS(nums)
+
+    # naive solution
+    def powerset_lengthOfLIS(self, nums):
         """
         :type nums: List[int]
         :rtype: int
@@ -78,4 +81,15 @@ class Solution:
         :rtype: int
         """
 
-        pass
+        class Inf:
+            def __lt__(self, other): return False
+            def __gt__(self, other): return True
+            def __eq__(self, other): return type(self) == type(other)
+        inf = Inf()
+
+        longest = 0
+
+        nums = [Inf] + nums
+
+        def opt(i):
+
