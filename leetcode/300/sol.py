@@ -87,9 +87,45 @@ class Solution:
             def __eq__(self, other): return type(self) == type(other)
         inf = Inf()
 
-        longest = 0
+        memo = [None] * len(nums)
 
-        nums = [Inf] + nums
+        nums = [inf] + nums
+        memo = [1] + memo
 
         def opt(i):
+            if memo[i] is None:
+                memo[i] = 1 + max(opt(j) if nums[j]<nums[i] else 0 for j in range(i))
+            return memo[i]
 
+        retval = opt(len(nums)-1)
+        return retval
+
+    # dynamic programming solution -- bottom up
+    def dp_lengthOfLIS_bottom_up(self, nums):
+        if len(nums) == 0: return 0
+
+        memo = [0]*len(nums)
+        memo[0] = 1
+
+        for i,num in enumerate(nums):
+            if i == 0: continue # skip first iteration
+            memo[i] = 1 + max(memo[j] if nums[j]<num else 0 for j in range(i))
+                
+        return memo[-1]
+
+    def dp_lengthOfLIS_2D_bottom_up(self, nums):
+        if len(nums) < 2: return len(nums)
+
+        memo = [[] for _ in range(len(nums))]
+        memo[0] = [1] * len(nums)
+
+        for i in range(1, len(nums)):
+            memo_prev, memo_curr = memo[i-1], memo[i]
+
+            for j in range(i, len(nums)):
+                # nums[j] is being considered, nums[i-1] is last added
+
+                m = max(memo_prev[j-(i-1)], 1 + (memo_prev[0] if nums[i-1]<nums[j] else 0))
+                memo_curr.append(m)
+
+        return memo[-1][-1]
