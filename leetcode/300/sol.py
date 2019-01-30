@@ -44,6 +44,10 @@ def powerset_v2(things: List[Any]):
     _powerset(things, len(things)-1)
     return all_subsets
 
+class Inf:
+    def __lt__(self, other): return False
+    def __gt__(self, other): return True
+
 class Solution:
 
     def lengthOfLIS(self, nums):
@@ -81,51 +85,30 @@ class Solution:
         :rtype: int
         """
 
-        class Inf:
-            def __lt__(self, other): return False
-            def __gt__(self, other): return True
-            def __eq__(self, other): return type(self) == type(other)
-        inf = Inf()
-
-        memo = [None] * len(nums)
-
-        nums = [inf] + nums
-        memo = [1] + memo
+        memo = [1] +     [0]*len(nums)
+        nums = [Inf()] + nums
 
         def opt(i):
-            if memo[i] is None:
-                memo[i] = 1 + max(opt(j) if nums[j]<nums[i] else 0 for j in range(i))
-            return memo[i]
+            if memo[i]:
+                return memo[i]
+            
+            res = 1 + max(x if nums[j]<nums[i] else 0 for j,x in enumerate(map(opt, range(i))))
+            memo[i] = res
 
-        retval = opt(len(nums)-1)
-        return retval
+            return res
+
+        opt(len(nums)-1)
+        return max(memo)
 
     # dynamic programming solution -- bottom up
     def dp_lengthOfLIS_bottom_up(self, nums):
-        if len(nums) == 0: return 0
 
-        memo = [0]*len(nums)
-        memo[0] = 1
+        memo = [None]*len(nums)
 
-        for i,num in enumerate(nums):
-            if i == 0: continue # skip first iteration
-            memo[i] = 1 + max(memo[j] if nums[j]<num else 0 for j in range(i))
-                
-        return memo[-1]
+        for i in range(0, len(nums)):
+            if i == 0:
+                memo[i] = 1
+            else:
+                memo[i] = 1 + max(memo[j] if nums[j]<nums[i] else 0 for j in range(i))
 
-    def dp_lengthOfLIS_2D_bottom_up(self, nums):
-        if len(nums) < 2: return len(nums)
-
-        memo = [[] for _ in range(len(nums))]
-        memo[0] = [1] * len(nums)
-
-        for i in range(1, len(nums)):
-            memo_prev, memo_curr = memo[i-1], memo[i]
-
-            for j in range(i, len(nums)):
-                # nums[j] is being considered, nums[i-1] is last added
-
-                m = max(memo_prev[j-(i-1)], 1 + (memo_prev[0] if nums[i-1]<nums[j] else 0))
-                memo_curr.append(m)
-
-        return memo[-1][-1]
+        return max(memo)
