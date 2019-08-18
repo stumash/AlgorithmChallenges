@@ -5,3 +5,5 @@ __pycache__
 *.exe
 *.o
 *.hi
+*.native
+_build
