@@ -19,19 +19,38 @@ def dijkstra(graph, start_node, end_node):
     is a list of (destination_node_idx, edge_cost) pairs.
 
     Big O
-    -------------------------
-    time:
-    O(# edges * log(# edges))
-    note that this can be "reduced" to O(# edges * log(# nodes)) because
-    # edge <= (# nodes)^2, and O(log ((# nodes)^2)) is equivalent to O(log (# nodes))
-    why:
-    For every edge in the graph, we do an insert and pop_min into the queue. The queue's
-    size is therefore O(# edges), so inserts and pop_mins take O(log(# edges)).
-    -------------------------
-    space:
-    O(# edges)
-    why: dist[] and prev[] are fixed at size <# nodes>. but the priority queue can have a
-    number of elements proportional to the number of edges.
+    V = number of vertices/nodes, E = number edges.
+
+    - the priority queue used in dijkstra's algorithm is a 'minimum binary heap'.
+      if binary heap has size O(N), bh.insert and bh.pop_min run in
+      O(log(N))
+
+    - dijkstra's time complexity:
+      O(E * log(E))
+
+      For every edge in the graph*, there is a (node, cost) pair that we insert into and eventually pop_min from
+      the queue. The queue's size is therefore O(E). Remember that for any queue size E, insert and pop_min take
+      O(log(E)) time.
+
+      *not EVERY edge in the graph will correspond to a (node, cost) pair being inserted into the queue.
+      Edges (u -> v) for which v is already visited in dijkstra's are obsolete, since v's shortest path from
+      start_node was finalized when it was visited. Despite this minority of ignored edges, we can say that the
+      number of edges THAT DO correspond to an insert of (node, cost) into the priority queue is O(E)
+
+      note:
+      O(E * log( E )) is O(E * log( V ))
+      - we assume no more than a single edge e for each possible v1,v2 node pair permutation, so E <= V^2
+      - so E            <=   V^2
+      - so E            is   O(V^2)
+      - so E * log(E)   is   O(E * log(V^2))
+      - so E * log(E)   is   O(E * 2 * log(V))
+      - so E * log(E)   is   O(E * log(V))
+
+    - dijkstra's space complexity:
+      O(E)
+
+      we know that dist[] and prev[] have V elements.
+      we established above that the priority queue has O(E) elements
     """
     visited = set()
     queue = PriorityQueue(seed=[(start_node, 0)], key=lambda tup: tup[1])
