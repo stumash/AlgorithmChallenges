@@ -10,20 +10,25 @@ def knapsack01(values, weights, capacity):
         subject to constraints
             sum(weights[i]*count[i] for i in elements) < capacity
             AND
-            all(count[i] < 1 for i in elements)
+            all(count[i] in [0,1] for i in elements)
     """
-    memo = [ [None]*len(values) for _ in range(capacity+1) ]
-    memo[0] = [0]*len(values)
+    memo = [ [None]*(len(values)+1) for _ in range(capacity+1) ]
+    memo[0] = [0]*(len(values)+1)
 
     def dp(item, cap):
-        pass
+        if item < 0 or cap < 0:
+            return None
+        if memo[item][cap] is None:
+            memo[item][cap] = max(filter(lambda x: x is not None, [
+            ]))
+        return memo[item][cap]
 
     def backtrack():
-        pass
+        return [] # TODO FIXME
 
-    # maxVal = dp(len(values)-1, capacity)
-    # itemCounts = backtrack()
-    # return maxVal, itemCounts
+    maxVal = dp(len(values), capacity)
+    itemCounts = backtrack()
+    return maxVal, itemCounts
 
 def knapsack(values, weights, capacity):
     """
@@ -33,7 +38,7 @@ def knapsack(values, weights, capacity):
         subject to constraints
             sum(weights[i]*count[i] for i in elements) < capacity
     """
-    pass
+    pass # TODO FIXME
 
 def test():
     items = [
