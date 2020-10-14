@@ -7,5 +7,10 @@ __pycache__
 *.hi
 *.native
 _build
+
+# scala
 .scalafmt.conf
 .metals/
+
+# rust
+target/
