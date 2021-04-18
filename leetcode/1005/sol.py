@@ -10,23 +10,23 @@ class Solution:
 
         negs = 0
         stop_negs = False
-        abs_min = A[-1]
+        abs_min = max(abs(A[0]), A[-1])
 
         for a in A:
-            abs_a = abs(a)
-            if a >= 0 or negs == K:
+            if a >= 0 or negs == K: # reached the end of negative numbers flipped to positive
                 stop_negs = True
             if not stop_negs:
                 negs += 1
+            abs_a = abs(a)
             if abs_a < abs_min:
                 abs_min = abs_a
 
-        res = -sum(A[:negs])
-        res += sum(A[negs:])
+        res = -sum(A[:negs]) # sum the flipped negatives
+        res += sum(A[negs:]) # and the non-flipped everything else
 
         rem = K - negs
-        if rem > 0 and rem % 2 == 1:
-            res -= 2 * abs_min
+        if rem > 0 and rem % 2 == 1: # if odd number of flips remains
+            res -= 2 * abs_min # smallest available positive number flips to negative
 
         return res
 
