@@ -24,7 +24,7 @@ def smallestNumberOfCoins(coinset, amount):
 
     return dp(amount)
 
-def test():
+if __name__ == "__main__":
     coinset = [1, 5, 10, 25]
     amount = 26
 

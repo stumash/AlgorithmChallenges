@@ -32,7 +32,7 @@ def topological_sort(graph):
 
     return order
 
-def test():
+if __name__ == "__main__":
     nodes = ['a','b','c','d','e','f']
     edges = [ ('a','d'), ('f','b'), ('b','d'), ('f','a'), ('d','c') ]
 
